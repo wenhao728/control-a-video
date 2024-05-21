@@ -59,7 +59,8 @@ testing_prompt = [args.prompt]
 each_sample_frame = args.each_sample_frame
 
 
-control_net_path = f"wf-genius/controlavideo-{control_mode}"
+model_root = '/workspace/models'
+control_net_path = f"{model_root}/controlavideo-{control_mode}"
 unet = UNetPseudo3DConditionModel.from_pretrained(control_net_path,
                         torch_dtype = torch.float16,
                         subfolder='unet',
@@ -70,7 +71,7 @@ controlnet = ControlNet3DModel.from_pretrained(control_net_path,
                         ).to("cuda")
 
 if control_mode == 'depth':
-    annotator_model = DPTForDepthEstimation.from_pretrained("Intel/dpt-hybrid-midas").to("cuda")
+    annotator_model = DPTForDepthEstimation.from_pretrained(f"{model_root}/dpt-hybrid-midas").to("cuda")
 elif control_mode == 'canny':
     annotator_model = None
 elif control_mode == 'hed':
